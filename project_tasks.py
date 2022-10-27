@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup as bs
 import creds
-
+import re
 
 
 def login(email, password, project_num):
@@ -36,7 +36,27 @@ def login(email, password, project_num):
         global souped_body
         souped_body = bs(response.content, 'html.parser')
         
+def task_properties():
+    task_properties = [] # Directory and file name info for each task
 
-     
+    # Get all div tags with each task's Repo information
+    tasks_info = souped_body.find_all('div', {'class' : 'list-group-item'})
+    
+    for task in tasks_info:
+        task_info = task.ul.find_all('li') # Info on repo name, directory & file name
+        task_dict = {
+            'repo_name' : task_info[0].code.text,
+            'dir_name' : task_info[1].code.text,  
+            'file_name' : task_info[2].code.text,
+        }
 
-login(creds.username, creds.password, 229)
+        task_properties.append(task_dict)
+
+    return task_properties
+
+
+
+login(creds.username, creds.password, 230)
+
+for task in task_properties():
+    print(task)
