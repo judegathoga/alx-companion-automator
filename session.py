@@ -30,7 +30,7 @@ class Session:
     # Returns a bs object of the project page
     # Returns a None if a captain log or evaluation has not been completed
     def project_page(self, proj_num):
-        proj_url = consts.projects_url + '/' + str(proj_num) 
+        proj_url = consts.projects_url + str(proj_num) 
      
         # Request for the appropriate project page
         proj_page = self.s.get(proj_url)
